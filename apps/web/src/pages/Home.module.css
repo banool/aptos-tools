@@ -1,0 +1,123 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero {
+  text-align: center;
+  padding: 2rem 0 3rem;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+
+.titleGradient {
+  background: linear-gradient(135deg, #4fc3a0 0%, #3ea88e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.tools {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.toolCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(79, 195, 160, 0.15);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.toolCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(79, 195, 160, 0.4);
+  background: rgba(79, 195, 160, 0.03);
+}
+
+.toolIcon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.toolName {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+  color: #4fc3a0;
+}
+
+.toolDescription {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  margin: 0 0 1rem;
+  flex: 1;
+  font-size: 0.95rem;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.875rem;
+}
+
+.featureIcon {
+  color: #4fc3a0;
+  font-weight: bold;
+}
+
+.toolAction {
+  color: #4fc3a0;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .tools {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding: 1.5rem 0 2rem;
+  }
+}
+
