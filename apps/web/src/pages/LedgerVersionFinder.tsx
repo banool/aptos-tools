@@ -12,7 +12,7 @@ interface SearchResult {
 }
 
 function LedgerVersionFinder() {
-  const { aptos } = useAptos();
+  const { aptos, network } = useAptos();
   const [targetDate, setTargetDate] = useState('');
   const [targetTime, setTargetTime] = useState('00:00:00');
   const [isSearching, setIsSearching] = useState(false);
@@ -142,33 +142,35 @@ function LedgerVersionFinder() {
       </div>
 
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.formGroup}>
-          <label htmlFor="date" className={styles.label}>
-            Target Date
-          </label>
-          <input
-            id="date"
-            type="date"
-            value={targetDate}
-            onChange={(e) => setTargetDate(e.target.value)}
-            className={styles.input}
-            required
-          />
-        </div>
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label htmlFor="date" className={styles.label}>
+              📅 Target Date
+            </label>
+            <input
+              id="date"
+              type="date"
+              value={targetDate}
+              onChange={(e) => setTargetDate(e.target.value)}
+              className={styles.dateInput}
+              required
+            />
+          </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="time" className={styles.label}>
-            Target Time (UTC)
-          </label>
-          <input
-            id="time"
-            type="time"
-            value={targetTime}
-            onChange={(e) => setTargetTime(e.target.value)}
-            className={styles.input}
-            step="1"
-            required
-          />
+          <div className={styles.formGroup}>
+            <label htmlFor="time" className={styles.label}>
+              🕐 Target Time (UTC)
+            </label>
+            <input
+              id="time"
+              type="time"
+              value={targetTime}
+              onChange={(e) => setTargetTime(e.target.value)}
+              className={styles.timeInput}
+              step="1"
+              required
+            />
+          </div>
         </div>
 
         <button
@@ -226,6 +228,14 @@ function LedgerVersionFinder() {
               </div>
             </div>
           </div>
+          <a
+            href={`https://explorer.aptoslabs.com/txn/${result.ledgerVersion}?network=${network.toLowerCase()}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.explorerLink}
+          >
+            View in Aptos Explorer →
+          </a>
         </div>
       )}
 

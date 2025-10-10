@@ -39,41 +39,68 @@
   margin-bottom: 1.5rem;
 }
 
-.formGroup {
-  margin-bottom: 1.25rem;
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.formGroup:last-of-type {
-  margin-bottom: 1.5rem;
+.formGroup {
+  display: flex;
+  flex-direction: column;
 }
 
 .label {
   display: block;
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.625rem;
   color: #4fc3a0;
   font-size: 0.9rem;
 }
 
-.input {
+.dateInput,
+.timeInput {
   width: 100%;
-  padding: 0.75rem 0.875rem;
+  padding: 0.875rem 1rem;
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(79, 195, 160, 0.2);
-  border-radius: 6px;
+  border-radius: 8px;
   color: #ffffff;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.dateInput::-webkit-calendar-picker-indicator,
+.timeInput::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(0.6) sepia(1) saturate(3) hue-rotate(130deg);
+  font-size: 1.1rem;
+  padding: 0.25rem;
+  border-radius: 4px;
   transition: all 0.2s;
 }
 
-.input:focus {
-  outline: none;
-  border-color: #4fc3a0;
-  box-shadow: 0 0 0 2px rgba(79, 195, 160, 0.1);
+.dateInput::-webkit-calendar-picker-indicator:hover,
+.timeInput::-webkit-calendar-picker-indicator:hover {
+  filter: invert(0.7) sepia(1) saturate(4) hue-rotate(130deg);
+  background: rgba(79, 195, 160, 0.1);
 }
 
-.input:hover {
-  border-color: rgba(79, 195, 160, 0.35);
+.dateInput:focus,
+.timeInput:focus {
+  outline: none;
+  border-color: #4fc3a0;
+  box-shadow: 0 0 0 3px rgba(79, 195, 160, 0.12);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.dateInput:hover,
+.timeInput:hover {
+  border-color: rgba(79, 195, 160, 0.4);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .submitButton {
@@ -183,6 +210,27 @@
   word-break: break-all;
 }
 
+.explorerLink {
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(79, 195, 160, 0.1);
+  border: 1px solid rgba(79, 195, 160, 0.3);
+  border-radius: 6px;
+  color: #4fc3a0;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.explorerLink:hover {
+  background: rgba(79, 195, 160, 0.15);
+  border-color: rgba(79, 195, 160, 0.5);
+  color: #3ea88e;
+  transform: translateY(-1px);
+}
+
 .log {
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(79, 195, 160, 0.15);
@@ -264,6 +312,11 @@
 
   .form {
     padding: 1.5rem;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 }
 
