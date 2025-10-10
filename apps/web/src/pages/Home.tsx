@@ -11,6 +11,14 @@ function Home() {
         'Find the ledger version closest to a specific date and time using binary search on the Aptos blockchain.',
       features: ['Binary search algorithm', 'Millisecond precision', 'All networks supported'],
     },
+    {
+      path: '/address-formatter',
+      name: 'AIP-40 Address Formatter',
+      icon: '📋',
+      description:
+        'Validate and format Aptos addresses according to AIP-40 standards. Convert between short and long formats.',
+      features: ['AIP-40 compliance check', 'Short & long formats', 'One-click copy'],
+    },
   ];
 
   return (
