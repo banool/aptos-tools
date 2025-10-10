@@ -31,12 +31,12 @@ function AddressFormatter() {
     try {
       // Parse the address using AccountAddress
       const address = AccountAddress.from(inputAddress.trim());
-      
+
       // Get all three formats
       const aip40Format = address.toString();
       const longFormat = address.toStringLong();
       const shortFormat = address.toStringShort();
-      
+
       // Check AIP-40 compliance
       // AIP-40 compliant addresses are 64 characters (without 0x prefix)
       // and don't have leading zeros after 0x
@@ -74,8 +74,7 @@ function AddressFormatter() {
           AIP-40 Address Formatter
         </h1>
         <p className={styles.description}>
-          Validate and format Aptos addresses according to AIP-40 standards. Convert
-          between short and long formats, and check compliance.
+          Validate and format Aptos addresses according to AIP-40 standards.
         </p>
       </div>
 
@@ -127,8 +126,8 @@ function AddressFormatter() {
             </div>
             {!result.isAIP40Compliant && (
               <div className={styles.complianceNote}>
-                Input address uses non-standard formatting. Use the long format below
-                for AIP-40 compliance.
+                Input address uses non-standard formatting. Use the long format below for AIP-40
+                compliance.
               </div>
             )}
           </div>
@@ -192,10 +191,12 @@ function AddressFormatter() {
         <h3 className={styles.infoTitle}>About AIP-40</h3>
         <ul className={styles.infoList}>
           <li>
-            <strong>AIP-40 Format</strong> - This is what <code>toString()</code> outputs. SHORT for special addresses (0x0 to 0xf), LONG for everything else.
+            <strong>AIP-40 Format</strong> - This is what <code>toString()</code> outputs. SHORT for
+            special addresses (0x0 to 0xf), LONG for everything else.
           </li>
           <li>
-            <strong>LONG Format</strong> - Via <code>toStringLong()</code>. Always 66 characters (0x + 64 hex digits).
+            <strong>LONG Format</strong> - Via <code>toStringLong()</code>. Always 66 characters (0x
+            + 64 hex digits).
           </li>
           <li>
             <strong>SHORT Format</strong> - Via <code>toStringShort()</code>. No leading zeroes.
@@ -207,4 +208,3 @@ function AddressFormatter() {
 }
 
 export default AddressFormatter;
-
