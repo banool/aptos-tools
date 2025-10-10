@@ -72,7 +72,7 @@ function Layout({ children }: { children: ReactNode }) {
         <p>
           Built with ❤️ for the Aptos community |{' '}
           <a
-            href="https://github.com/yourusername/aptos-tools"
+            href="https://github.com/banool/aptos-tools"
             target="_blank"
             rel="noopener noreferrer"
           >
