@@ -21,7 +21,10 @@ function LedgerVersionFinder() {
   const [searchLog, setSearchLog] = useState<string[]>([]);
 
   const addLog = (message: string) => {
-    setSearchLog((prev) => [...prev, `${new Date().toISOString().split('T')[1].split('.')[0]} - ${message}`]);
+    setSearchLog((prev) => [
+      ...prev,
+      `${new Date().toISOString().split('T')[1].split('.')[0]} - ${message}`,
+    ]);
   };
 
   const findLedgerVersion = async () => {
@@ -37,7 +40,9 @@ function LedgerVersionFinder() {
 
     try {
       const targetTimestamp = new Date(`${targetDate}T${targetTime}`).getTime() * 1000; // Convert to microseconds
-      addLog(`Target timestamp: ${targetTimestamp} (${new Date(targetTimestamp / 1000).toISOString()})`);
+      addLog(
+        `Target timestamp: ${targetTimestamp} (${new Date(targetTimestamp / 1000).toISOString()})`,
+      );
 
       // Get the latest ledger info
       addLog('Fetching latest ledger info...');
@@ -69,7 +74,9 @@ function LedgerVersionFinder() {
         const diff = Number(blockTimestamp - BigInt(targetTimestamp));
         const absDiff = Math.abs(diff);
 
-        addLog(`  Block timestamp: ${blockTimestamp} (${new Date(Number(blockTimestamp) / 1000).toISOString()})`);
+        addLog(
+          `  Block timestamp: ${blockTimestamp} (${new Date(Number(blockTimestamp) / 1000).toISOString()})`,
+        );
         addLog(`  Difference: ${(diff / 1000000).toFixed(2)}s`);
 
         // Track closest version
@@ -135,9 +142,9 @@ function LedgerVersionFinder() {
           Ledger Version Finder
         </h1>
         <p className={styles.description}>
-          Find the closest ledger version to a specific date and time using binary search
-          on the Aptos blockchain. This tool efficiently searches through millions of
-          transactions to pinpoint the exact moment you're looking for.
+          Find the closest ledger version to a specific date and time using binary search on the
+          Aptos blockchain. This tool efficiently searches through millions of transactions to
+          pinpoint the exact moment you're looking for.
         </p>
       </div>
 
@@ -173,11 +180,7 @@ function LedgerVersionFinder() {
           </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={isSearching}
-          className={styles.submitButton}
-        >
+        <button type="submit" disabled={isSearching} className={styles.submitButton}>
           {isSearching ? (
             <>
               <span className={styles.spinner} />
@@ -217,15 +220,11 @@ function LedgerVersionFinder() {
             </div>
             <div className={styles.resultItem}>
               <div className={styles.resultLabel}>Time Difference</div>
-              <div className={styles.resultValue}>
-                {result.diffSeconds.toFixed(2)} seconds
-              </div>
+              <div className={styles.resultValue}>{result.diffSeconds.toFixed(2)} seconds</div>
             </div>
             <div className={styles.resultItem}>
               <div className={styles.resultLabel}>Microseconds</div>
-              <div className={styles.resultValue}>
-                {result.timestamp.toLocaleString()}
-              </div>
+              <div className={styles.resultValue}>{result.timestamp.toLocaleString()}</div>
             </div>
           </div>
           <a
@@ -256,18 +255,14 @@ function LedgerVersionFinder() {
         <h3 className={styles.infoTitle}>How it works</h3>
         <ul className={styles.infoList}>
           <li>
-            Uses <strong>binary search</strong> algorithm to efficiently find the target
-            ledger version in O(log n) time complexity
+            Uses <strong>binary search</strong> algorithm to efficiently find the target ledger
+            version in O(log n) time complexity
           </li>
-          <li>
-            Queries the Aptos blockchain to get block timestamps at different ledger versions
-          </li>
+          <li>Queries the Aptos blockchain to get block timestamps at different ledger versions</li>
           <li>
             Narrows down the search range until finding the version closest to your target time
           </li>
-          <li>
-            Achieves sub-second accuracy by continuing search until within 1 second tolerance
-          </li>
+          <li>Achieves sub-second accuracy by continuing search until within 1 second tolerance</li>
         </ul>
       </div>
     </div>
@@ -275,4 +270,3 @@ function LedgerVersionFinder() {
 }
 
 export default LedgerVersionFinder;
-

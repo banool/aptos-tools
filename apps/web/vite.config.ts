@@ -5,10 +5,7 @@ import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    TanStackRouterVite(),
-    react(),
-  ],
+  plugins: [TanStackRouterVite(), react()],
   base: '/',
   resolve: {
     alias: {
@@ -23,4 +20,3 @@ export default defineConfig({
     sourcemap: true,
   },
 });
-

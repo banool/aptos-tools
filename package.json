@@ -7,9 +7,13 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
+    "fmt": "pnpm format",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "deploy": "cd apps/web && pnpm run deploy"
   },
   "devDependencies": {
+    "prettier": "^3.4.2",
     "turbo": "^2.3.0"
   },
   "packageManager": "pnpm@10.17.1",
@@ -18,4 +22,3 @@
     "pnpm": ">=9.0.0"
   }
 }
-

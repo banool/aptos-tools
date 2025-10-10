@@ -8,9 +8,7 @@ function Layout({ children }: { children: ReactNode }) {
   const router = useRouterState();
   const { network, setNetwork } = useAptos();
 
-  const tools = [
-    { path: '/ledger-version-finder', name: 'Ledger Version Finder', icon: '🔍' },
-  ];
+  const tools = [{ path: '/ledger-version-finder', name: 'Ledger Version Finder', icon: '🔍' }];
 
   const currentPath = router.location.pathname;
 
@@ -22,7 +20,7 @@ function Layout({ children }: { children: ReactNode }) {
             <span className={styles.logoIcon}>⬢</span>
             <span className={styles.logoText}>Aptos Tools</span>
           </Link>
-          
+
           <div className={styles.networkSelector}>
             <label htmlFor="network">Network:</label>
             <select
@@ -49,7 +47,7 @@ function Layout({ children }: { children: ReactNode }) {
               <span className={styles.navIcon}>🏠</span>
               <span>Home</span>
             </Link>
-            
+
             {tools.map((tool) => (
               <Link
                 key={tool.path}
@@ -63,19 +61,13 @@ function Layout({ children }: { children: ReactNode }) {
           </nav>
         </aside>
 
-        <main className={styles.content}>
-          {children}
-        </main>
+        <main className={styles.content}>{children}</main>
       </div>
 
       <footer className={styles.footer}>
         <p>
           Built with ❤️ for the Aptos community |{' '}
-          <a
-            href="https://github.com/banool/aptos-tools"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href="https://github.com/banool/aptos-tools" target="_blank" rel="noopener noreferrer">
             GitHub
           </a>
         </p>
@@ -85,4 +77,3 @@ function Layout({ children }: { children: ReactNode }) {
 }
 
 export default Layout;
-

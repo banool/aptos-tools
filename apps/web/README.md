@@ -9,6 +9,7 @@ The main web application for Aptos Tools, built with React, Vite, and the Aptos 
 Find the ledger version closest to a specific date and time using an efficient binary search algorithm.
 
 **How it works:**
+
 1. Takes a target date and time as input
 2. Uses binary search to query blocks on the Aptos blockchain
 3. Compares block timestamps with the target timestamp
@@ -38,6 +39,7 @@ pnpm deploy
 ### Network Selection
 
 The app supports all Aptos networks:
+
 - Mainnet (default)
 - Testnet
 - Devnet
@@ -47,6 +49,7 @@ Switch between networks using the network selector in the header.
 ### GitHub Pages Deployment
 
 The app is configured for deployment to GitHub Pages:
+
 - Base path is set to `/aptos-tools/` in `vite.config.ts`
 - GitHub Actions workflow handles automatic deployment on push to main
 - Manual deployment available via `pnpm deploy`
@@ -71,4 +74,3 @@ The app is configured for deployment to GitHub Pages:
 ## License
 
 MIT
-

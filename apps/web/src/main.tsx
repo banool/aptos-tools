@@ -11,7 +11,7 @@ import { routeTree } from './routeTree.gen';
 const hashHistory = createHashHistory();
 
 // Create a new router instance with hash history
-const router = createRouter({ 
+const router = createRouter({
   routeTree,
   history: hashHistory,
 });

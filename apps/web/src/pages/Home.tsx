@@ -7,7 +7,8 @@ function Home() {
       path: '/ledger-version-finder',
       name: 'Ledger Version Finder',
       icon: '🔍',
-      description: 'Find the ledger version closest to a specific date and time using binary search on the Aptos blockchain.',
+      description:
+        'Find the ledger version closest to a specific date and time using binary search on the Aptos blockchain.',
       features: ['Binary search algorithm', 'Millisecond precision', 'All networks supported'],
     },
   ];
@@ -18,9 +19,7 @@ function Home() {
         <h1 className={styles.title}>
           <span className={styles.titleGradient}>Aptos Tools</span>
         </h1>
-        <p className={styles.subtitle}>
-          Utilities for the Aptos blockchain
-        </p>
+        <p className={styles.subtitle}>Utilities for the Aptos blockchain</p>
       </div>
 
       <div className={styles.tools}>
@@ -37,9 +36,7 @@ function Home() {
                 </li>
               ))}
             </ul>
-            <div className={styles.toolAction}>
-              Try it now →
-            </div>
+            <div className={styles.toolAction}>Try it now →</div>
           </Link>
         ))}
       </div>
@@ -48,4 +45,3 @@ function Home() {
 }
 
 export default Home;
-
