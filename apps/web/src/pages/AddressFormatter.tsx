@@ -5,8 +5,9 @@ import styles from './AddressFormatter.module.css';
 interface AddressResult {
   isValid: boolean;
   isAIP40Compliant: boolean;
-  shortFormat: string;
+  aip40Format: string;
   longFormat: string;
+  shortFormat: string;
   rawInput: string;
 }
 
@@ -31,20 +32,22 @@ function AddressFormatter() {
       // Parse the address using AccountAddress
       const address = AccountAddress.from(inputAddress.trim());
       
-      // Get both formats
-      const longFormat = address.toString();
-      const shortFormat = address.toStringWithoutPrefix();
+      // Get all three formats
+      const aip40Format = address.toString();
+      const longFormat = address.toStringLong();
+      const shortFormat = address.toStringShort();
       
       // Check AIP-40 compliance
       // AIP-40 compliant addresses are 64 characters (without 0x prefix)
       // and don't have leading zeros after 0x
-      const isAIP40Compliant = inputAddress.trim().toLowerCase() === longFormat.toLowerCase();
+      const isAIP40Compliant = inputAddress.trim().toLowerCase() === aip40Format.toLowerCase();
 
       setResult({
         isValid: true,
         isAIP40Compliant,
-        shortFormat,
+        aip40Format,
         longFormat,
+        shortFormat,
         rawInput: inputAddress.trim(),
       });
     } catch (err) {
@@ -133,7 +136,24 @@ function AddressFormatter() {
           <div className={styles.formats}>
             <div className={styles.formatCard}>
               <div className={styles.formatHeader}>
-                <div className={styles.formatLabel}>LONG Format (AIP-40)</div>
+                <div className={styles.formatLabel}>AIP-40 Format</div>
+                <button
+                  type="button"
+                  onClick={() => copyToClipboard(result.aip40Format, 'aip40')}
+                  className={styles.copyButton}
+                >
+                  {copiedField === 'aip40' ? '✓ Copied' : 'Copy'}
+                </button>
+              </div>
+              <div className={styles.formatValue}>{result.aip40Format}</div>
+              <div className={styles.formatNote}>
+                Standard format via toString() - AIP-40 compliant
+              </div>
+            </div>
+
+            <div className={styles.formatCard}>
+              <div className={styles.formatHeader}>
+                <div className={styles.formatLabel}>LONG Format</div>
                 <button
                   type="button"
                   onClick={() => copyToClipboard(result.longFormat, 'long')}
@@ -144,7 +164,7 @@ function AddressFormatter() {
               </div>
               <div className={styles.formatValue}>{result.longFormat}</div>
               <div className={styles.formatNote}>
-                64 hex characters with 0x prefix (standard format)
+                Via toStringLong() - Full 64 hex characters with 0x prefix
               </div>
             </div>
 
@@ -153,14 +173,16 @@ function AddressFormatter() {
                 <div className={styles.formatLabel}>SHORT Format</div>
                 <button
                   type="button"
-                  onClick={() => copyToClipboard('0x' + result.shortFormat, 'short')}
+                  onClick={() => copyToClipboard(result.shortFormat, 'short')}
                   className={styles.copyButton}
                 >
                   {copiedField === 'short' ? '✓ Copied' : 'Copy'}
                 </button>
               </div>
-              <div className={styles.formatValue}>0x{result.shortFormat}</div>
-              <div className={styles.formatNote}>Without leading zeros (human-readable)</div>
+              <div className={styles.formatValue}>{result.shortFormat}</div>
+              <div className={styles.formatNote}>
+                Via toStringShort() - Without leading zeros (human-readable)
+              </div>
             </div>
           </div>
         </div>
@@ -170,19 +192,13 @@ function AddressFormatter() {
         <h3 className={styles.infoTitle}>About AIP-40</h3>
         <ul className={styles.infoList}>
           <li>
-            <strong>AIP-40</strong> standardizes Aptos address formatting for consistency
+            <strong>AIP-40 Format</strong> - This is what <code>toString()</code> outputs. SHORT for special addresses (0x0 to 0xf), LONG for everything else.
           </li>
           <li>
-            Compliant addresses are always <strong>66 characters</strong> (0x + 64 hex digits)
+            <strong>LONG Format</strong> - Via <code>toStringLong()</code>. Always 66 characters (0x + 64 hex digits).
           </li>
           <li>
-            Short format removes leading zeros for readability (e.g., 0x1 instead of 0x00...01)
-          </li>
-          <li>
-            Both formats are valid, but long format is required for certain operations
-          </li>
-          <li>
-            Special addresses like <strong>0x1</strong> (core framework) use short format commonly
+            <strong>SHORT Format</strong> - Via <code>toStringShort()</code>. No leading zeroes.
           </li>
         </ul>
       </div>
