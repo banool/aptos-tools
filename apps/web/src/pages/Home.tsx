@@ -19,6 +19,14 @@ function Home() {
         'Validate and format Aptos addresses according to AIP-40 standards. Convert between short and long formats.',
       features: ['AIP-40 compliance check', 'Short & long formats', 'One-click copy'],
     },
+    {
+      path: '/clock-comparison',
+      name: 'Clock Comparison',
+      icon: '🕐',
+      description:
+        'Compare wall clock time with Aptos blockchain time across multiple timezones. Visualize time differences in analog or digital format.',
+      features: ['Multiple timezones', 'Analog & digital clocks', 'Latency correction'],
+    },
   ];
 
   return (
