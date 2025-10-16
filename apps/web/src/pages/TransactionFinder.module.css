@@ -1,0 +1,345 @@
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 2.25rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+  background: linear-gradient(135deg, #4fc3a0 0%, #3ea88e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.icon {
+  font-size: 1.875rem;
+}
+
+.description {
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.6;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.form {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(79, 195, 160, 0.15);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.625rem;
+  color: #4fc3a0;
+  font-size: 0.9rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(79, 195, 160, 0.2);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 1rem;
+  font-family: 'Courier New', monospace;
+  transition: all 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #4fc3a0;
+  box-shadow: 0 0 0 3px rgba(79, 195, 160, 0.12);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.input:hover {
+  border-color: rgba(79, 195, 160, 0.4);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.hint {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.submitButton {
+  flex: 1;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #4fc3a0 0%, #3ea88e 100%);
+  border: none;
+  border-radius: 6px;
+  color: #0c1116;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 195, 160, 0.3);
+}
+
+.submitButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stopButton {
+  padding: 0.875rem 1.5rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 6px;
+  color: #ef4444;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.stopButton:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+  transform: translateY(-1px);
+}
+
+.stopButton:active {
+  transform: translateY(0);
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(12, 17, 22, 0.3);
+  border-top-color: #0c1116;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 8px;
+  padding: 0.875rem 1rem;
+  color: #fca5a5;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.error strong {
+  color: #ef4444;
+}
+
+.result {
+  background: rgba(79, 195, 160, 0.05);
+  border: 1px solid rgba(79, 195, 160, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.resultTitle {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 1.25rem;
+  color: #4fc3a0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.resultGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+.resultItem {
+  background: rgba(0, 0, 0, 0.15);
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(79, 195, 160, 0.1);
+}
+
+.resultLabel {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.resultValue {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #ffffff;
+  word-break: break-all;
+}
+
+.explorerLink {
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(79, 195, 160, 0.1);
+  border: 1px solid rgba(79, 195, 160, 0.3);
+  border-radius: 6px;
+  color: #4fc3a0;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.explorerLink:hover {
+  background: rgba(79, 195, 160, 0.15);
+  border-color: rgba(79, 195, 160, 0.5);
+  color: #3ea88e;
+  transform: translateY(-1px);
+}
+
+.log {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(79, 195, 160, 0.15);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.logTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.875rem;
+  color: #4fc3a0;
+}
+
+.logContent {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 6px;
+  padding: 0.875rem;
+  max-height: 280px;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+}
+
+.logLine {
+  color: rgba(255, 255, 255, 0.65);
+  padding: 0.2rem 0;
+  line-height: 1.5;
+}
+
+.logLine:hover {
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(79, 195, 160, 0.04);
+}
+
+.info {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  padding: 1.25rem;
+}
+
+.infoTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.875rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.infoList {
+  margin: 0;
+  padding-left: 1.35rem;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.65;
+  font-size: 0.9rem;
+}
+
+.infoList li {
+  margin-bottom: 0.625rem;
+}
+
+.infoList li:last-child {
+  margin-bottom: 0;
+}
+
+.infoList strong {
+  color: #4fc3a0;
+}
+
+.infoList code {
+  background: rgba(79, 195, 160, 0.1);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85em;
+  color: #4fc3a0;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .resultGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .form {
+    padding: 1.25rem;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+
+  .submitButton {
+    width: 100%;
+  }
+
+  .stopButton {
+    width: 100%;
+  }
+}
+

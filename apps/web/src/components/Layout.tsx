@@ -12,6 +12,7 @@ function Layout({ children }: { children: ReactNode }) {
     { path: '/ledger-version-finder', name: 'Ledger Version Finder', icon: '🔍' },
     { path: '/address-formatter', name: 'Address Formatter', icon: '📋' },
     { path: '/clock-comparison', name: 'Clock Comparison', icon: '🕐' },
+    { path: '/transaction-finder', name: 'Transaction Finder', icon: '🔎' },
   ];
 
   const currentPath = router.location.pathname;

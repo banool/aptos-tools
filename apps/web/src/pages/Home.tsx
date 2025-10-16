@@ -27,6 +27,14 @@ function Home() {
         'Compare wall clock time with Aptos blockchain time across multiple timezones. Visualize time differences in analog or digital format.',
       features: ['Multiple timezones', 'Analog & digital clocks', 'Latency correction'],
     },
+    {
+      path: '/transaction-finder',
+      name: 'Transaction Finder',
+      icon: '🔎',
+      description:
+        'Find the transaction hash and ledger version for a transaction by sender address and sequence number using binary search.',
+      features: ['Binary search algorithm', 'O(log n) complexity', 'Full transaction details'],
+    },
   ];
 
   return (
