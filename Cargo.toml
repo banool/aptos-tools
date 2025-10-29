@@ -1,0 +1,9 @@
+[workspace]
+members = []
+resolver = "2"
+
+[workspace.package]
+edition = "2024"
+publish = false
+
+[workspace.dependencies]

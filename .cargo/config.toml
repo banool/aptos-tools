@@ -1,0 +1,26 @@
+[alias]
+xclippy = [
+  "clippy",
+  "--workspace",
+  "--all-targets",
+  "--",
+  "-Dwarnings",
+  "-Wclippy::all",
+  "-Aclippy::enum-variant-names",
+  "-Aclippy::large-enum-variant",
+  "-Aclippy::manual_range_contains",
+  "-Aclippy::match-like-matches-macro",
+  "-Aclippy::mutable-key-type",
+  "-Aclippy::result-large-err",
+  "-Aclippy::upper_case_acronyms",
+]
+
+[build]
+rustflags = [
+  "--cfg",
+  "tokio_unstable",
+  "-C",
+  "force-frame-pointers=yes",
+  "-C",
+  "force-unwind-tables=yes",
+]

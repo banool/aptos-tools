@@ -1,0 +1,6 @@
+edition = "2024"
+match_block_trailing_comma = true
+newline_style = "Unix"
+use_field_init_shorthand = true
+# this requires nightly, let's not use it for now
+# imports_granularity = "Crate"

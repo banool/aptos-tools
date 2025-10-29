@@ -1,5 +1,6 @@
 .cursor/mcp.json
 .tanstack
+target
 
 # Dependencies
 node_modules/
