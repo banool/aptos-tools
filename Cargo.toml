@@ -1,5 +1,6 @@
 [workspace]
 members = [
+  "crates/aptos-ext",
   "crates/aptos-move-graphql-scalars",
   "crates/aptos-move-graphql-schema",
   "crates/aptos-move-graphql-test-helpers",
@@ -23,6 +24,7 @@ aptos-move-graphql-test-helpers = { path = "crates/aptos-move-graphql-test-helpe
 # Regular dependencies
 anyhow = "1.0.98"
 async-graphql = { version = "6.0.1", features = ["dynamic-schema"] }
+async-trait = "0.1.68"
 clap = { version = "4.3.9", features = [
     "derive",
     "env",
@@ -35,17 +37,27 @@ serde_json = { version = "1.0.81", features = [
     "preserve_order",
     "arbitrary_precision",
 ] }
-
-# aptos-core dependencies
-aptos-api-types = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "d6e70fb4159dbe606ad5783e3b0ec283eba78c9f" }
-move-core-types = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "d6e70fb4159dbe606ad5783e3b0ec283eba78c9f" }
-
-# dev dependencies
-aptos-framework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "d6e70fb4159dbe606ad5783e3b0ec283eba78c9f" }
-aptos-types = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "d6e70fb4159dbe606ad5783e3b0ec283eba78c9f" }
-move-binary-format = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "d6e70fb4159dbe606ad5783e3b0ec283eba78c9f" }
-move-resource-viewer = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "d6e70fb4159dbe606ad5783e3b0ec283eba78c9f" }
 tokio = { version = "1.35.1", features = ["full"] }
+
+# aptos dependencies
+aptos = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
+aptos-api-types = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
+aptos-framework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
+aptos-types = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
+async-graphql-reverse = { git = "https://github.com/tacogips/async-graphql-reverse.git", rev = "2e5e7758051f7ba57da3940e5bc75a4e80badf4c" }
+move-binary-format = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
+move-core-types = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
+move-package = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
+move-resource-viewer = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
 
 [patch.crates-io]
 merlin = { git = "https://github.com/aptos-labs/merlin" }
+jemalloc-sys = { git = "https://github.com/aptos-labs/jemalloc-sys-shim", rev = "e0920246dd74303fab9a14b990768c6ac990a59b" }
+
+[profile.cli]
+inherits = "release"
+debug = false
+opt-level = "z"
+lto = "thin"
+strip = true
+codegen-units = 1
