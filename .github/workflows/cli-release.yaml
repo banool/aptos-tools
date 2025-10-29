@@ -14,11 +14,6 @@ on:
         type: string
         required: false
         description: "GIT_SHA_OVERRIDE: Use this to override the Git SHA1, branch name (e.g. devnet) or tag to build the binaries from. Defaults to the workflow Git REV, but can be different than that:"
-      dry_run:
-        type: boolean
-        required: false
-        default: true
-        description: "Dry run - If checked, the release will not be created"
       skip_checks:
         type: boolean
         required: false
@@ -33,7 +28,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.source_git_ref_override }}
-      - uses: aptos-labs/aptos-core/.github/actions/cli-rust-setup@main
       - name: Build CLI
         run: scripts/build_cli_release.sh "Linux" "${{inputs.release_version}}" "${{inputs.skip_checks}}" "false"
       - name: Upload Binary
@@ -49,7 +43,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.source_git_ref_override }}
-      - uses: aptos-labs/aptos-core/.github/actions/cli-rust-setup@main
       - name: Build CLI
         run: scripts/build_cli_release.sh "macOS" "${{inputs.release_version}}" "${{inputs.skip_checks}}" "false"
       - name: Upload Binary
@@ -67,7 +60,6 @@ jobs:
     permissions:
       contents: "write"
       pull-requests: "read"
-    if: ${{ inputs.dry_run }} == 'false'
     steps:
       - name: Download prebuilt binaries
         uses: actions/download-artifact@v4
