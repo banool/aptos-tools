@@ -1,7 +1,7 @@
 [package]
 name = "aptos-ext"
 description = "Extended Aptos tool for code generation from Move modules"
-version = "0.1.0"
+version = "7.10.2"
 
 # Workspace inherited keys
 authors = { workspace = true }

@@ -19,6 +19,12 @@ pub static ALL_CUSTOM_SCALARS_TYPE_NAMES: Lazy<Vec<&'static str>> = Lazy::new(||
         U64::type_name(),
         U128::type_name(),
         U256::type_name(),
+        I8::type_name(),
+        I16::type_name(),
+        I32::type_name(),
+        I64::type_name(),
+        I128::type_name(),
+        I256::type_name(),
         Address::type_name(),
         Any::type_name(),
     ]
@@ -27,6 +33,10 @@ pub static ALL_CUSTOM_SCALARS_TYPE_NAMES: Lazy<Vec<&'static str>> = Lazy::new(||
 pub type U8 = u8;
 pub type U16 = u16;
 pub type U32 = u32;
+
+pub type I8 = i8;
+pub type I16 = i16;
+pub type I32 = i32;
 
 /// Represents an AccountAddress.
 pub type Address = AccountAddress;
@@ -103,8 +113,16 @@ define_integer_type!(U64, u64, "u64 encoded as a string.");
 define_integer_type!(U128, u128, "u128 encoded as a string.");
 define_integer_type!(
     U256,
-    move_core_types::u256::U256,
+    move_core_types::int256::U256,
     "u256 encoded as a string."
+);
+
+define_integer_type!(I64, i64, "i64 encoded as a string.");
+define_integer_type!(I128, i128, "i128 encoded as a string.");
+define_integer_type!(
+    I256,
+    move_core_types::int256::I256,
+    "i256 encoded as a string."
 );
 
 /// The schema generator needs to reference these types as strings. This trait
@@ -149,6 +167,42 @@ impl TypeName for U128 {
 impl TypeName for U256 {
     fn type_name() -> &'static str {
         "U256"
+    }
+}
+
+impl TypeName for I8 {
+    fn type_name() -> &'static str {
+        "I8"
+    }
+}
+
+impl TypeName for I16 {
+    fn type_name() -> &'static str {
+        "I16"
+    }
+}
+
+impl TypeName for I32 {
+    fn type_name() -> &'static str {
+        "I32"
+    }
+}
+
+impl TypeName for I64 {
+    fn type_name() -> &'static str {
+        "I64"
+    }
+}
+
+impl TypeName for I128 {
+    fn type_name() -> &'static str {
+        "I128"
+    }
+}
+
+impl TypeName for I256 {
+    fn type_name() -> &'static str {
+        "I256"
     }
 }
 

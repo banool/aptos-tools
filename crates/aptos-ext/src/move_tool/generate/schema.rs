@@ -56,7 +56,7 @@ impl CliCommand<String> for GenerateSchema {
 
         // Write the schema to the file.
         std::fs::write(&schema_path, sdl)
-            .map_err(|e| CliError::UnexpectedError(format!("Failed to write schema: {:#}", e)))?;
+            .map_err(|e| CliError::UnexpectedError(format!("Failed to write schema: {e:#}")))?;
 
         Ok(format!("Schema written to {}", schema_path.display()))
     }

@@ -4,7 +4,9 @@
 use crate::{common::BuilderOptions, discover::MoveStructWithModuleId};
 use anyhow::{Context, Result, bail};
 use aptos_api_types::MoveType;
-use aptos_move_graphql_scalars::{Address, Any, TypeName, U8, U16, U32, U64, U128, U256};
+use aptos_move_graphql_scalars::{
+    Address, Any, I8, I16, I32, I64, I128, I256, TypeName, U8, U16, U32, U64, U128, U256,
+};
 use async_graphql::dynamic::{Field, FieldFuture, Object, TypeRef};
 use move_core_types::language_storage::{CORE_CODE_ADDRESS, StructTag};
 use std::collections::HashSet;
@@ -41,7 +43,7 @@ pub fn parse_structs(
         // I believe this is masking the fact that we don't support enums properly.
         if struc.struc.fields.is_empty() {
             object = object.field(Field::new(
-                "dummy",
+                "cannot_handle_enum_or_empty_structs",
                 TypeRef::Named(TypeRef::STRING.into()),
                 move |_| FieldFuture::new(async move { Ok(Some(())) }),
             ));
@@ -102,12 +104,6 @@ pub fn move_type_to_field_type(
         MoveType::Bool => Ok(TypeRef::NonNull(Box::new(TypeRef::Named(
             TypeRef::BOOLEAN.into(),
         )))),
-        // You'll see that we use custom scalar types in the schema for these types.
-        // This doesn't directly affect the way we encode the responses. Indeed, we
-        // encode u8, u16, and u32 as ints and u64, u128, and u256 as strings in
-        // the messages over the wire. It is then up to the client to choose how
-        // to interpret these values. For Rust, aptos-move-graphql-scalars can be
-        // used to correctly handle these values.
         MoveType::U8 => Ok(TypeRef::NonNull(Box::new(TypeRef::Named(
             std::borrow::Cow::Borrowed(U8::type_name()),
         )))),
@@ -126,15 +122,27 @@ pub fn move_type_to_field_type(
         MoveType::U256 => Ok(TypeRef::NonNull(Box::new(TypeRef::Named(
             std::borrow::Cow::Borrowed(U256::type_name()),
         )))),
+        MoveType::I8 => Ok(TypeRef::NonNull(Box::new(TypeRef::Named(
+            std::borrow::Cow::Borrowed(I8::type_name()),
+        )))),
+        MoveType::I16 => Ok(TypeRef::NonNull(Box::new(TypeRef::Named(
+            std::borrow::Cow::Borrowed(I16::type_name()),
+        )))),
+        MoveType::I32 => Ok(TypeRef::NonNull(Box::new(TypeRef::Named(
+            std::borrow::Cow::Borrowed(I32::type_name()),
+        )))),
+        MoveType::I64 => Ok(TypeRef::NonNull(Box::new(TypeRef::Named(
+            std::borrow::Cow::Borrowed(I64::type_name()),
+        )))),
+        MoveType::I128 => Ok(TypeRef::NonNull(Box::new(TypeRef::Named(
+            std::borrow::Cow::Borrowed(I128::type_name()),
+        )))),
+        MoveType::I256 => Ok(TypeRef::NonNull(Box::new(TypeRef::Named(
+            std::borrow::Cow::Borrowed(I256::type_name()),
+        )))),
         MoveType::Address => Ok(TypeRef::NonNull(Box::new(TypeRef::Named(
             std::borrow::Cow::Borrowed(Address::type_name()),
         )))),
-        // TODO: Do we want special behavior for vectors of u8? What about other byte
-        // vectors? Okay yeah I know for vector<u8> at the least I want to represent
-        // this a different way. Sort of hard to differentiate between byte data and
-        // someone just wanting to store a small vec of u8 though, I wish we had some
-        // kind of bytes wrapper type. I can bring this up, though it's ofc too late
-        // in most cases.
         MoveType::Vector { items: move_type } => {
             Ok(TypeRef::NonNull(Box::new(TypeRef::List(Box::new(
                 move_type_to_field_type(move_type, repeated_struct_names, options)?,
@@ -200,10 +208,6 @@ pub fn move_type_to_field_type(
                 std::borrow::Cow::Borrowed(Any::type_name()),
             ))))
         },
-        // These types cannot appear in structs that we read from storage:
-        //   - Signer is not store
-        //   - References aren't store.
-        //   - Unparseable is only used on the input side
         MoveType::Signer | MoveType::Reference { mutable: _, to: _ } | MoveType::Unparsable(_) => {
             bail!("Type {field_type:?} should not appear in a struct from storage")
         },

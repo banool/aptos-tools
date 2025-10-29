@@ -5,7 +5,7 @@ use super::build_schema_str;
 use aptos::common::types::{CliCommand, CliError, CliTypedResult, MovePackageOptions};
 use aptos::move_tool::IncludedArtifactsArgs;
 use aptos_move_graphql_schema::BuilderOptions;
-use async_graphql_reverse::{output_schema, parse_schema_file, Phase, RendererConfig};
+use async_graphql_reverse::{Phase, RendererConfig, output_schema, parse_schema_file};
 use async_trait::async_trait;
 use clap::Parser;
 use std::path::PathBuf;
@@ -58,7 +58,7 @@ impl CliCommand<String> for GenerateRust {
 
                 // Write the schema to the file.
                 std::fs::write(&schema_path, schema).map_err(|e| {
-                    CliError::UnexpectedError(format!("Failed to write schema: {:#}", e))
+                    CliError::UnexpectedError(format!("Failed to write schema: {e:#}"))
                 })?;
                 println!("Schema written to {}", schema_path.display());
                 schema_path

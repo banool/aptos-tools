@@ -5,7 +5,7 @@
 
 #![forbid(unsafe_code)]
 
-use aptos_ext::{move_tool, Tool};
+use aptos_ext::{Tool, move_tool};
 use clap::Parser;
 use std::{process::exit, time::Duration};
 
@@ -28,11 +28,10 @@ fn main() {
     runtime.shutdown_timeout(Duration::from_millis(50));
 
     match result {
-        Ok(inner) => println!("{}", inner),
+        Ok(inner) => println!("{inner}"),
         Err(inner) => {
-            eprintln!("{}", inner);
+            eprintln!("{inner}");
             exit(1);
         },
     }
 }
-

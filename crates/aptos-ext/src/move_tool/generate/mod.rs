@@ -4,13 +4,13 @@
 mod rust;
 mod schema;
 
+use anyhow::Result;
 use aptos::common::types::{CliCommand, CliError, CliResult, MovePackageOptions};
 use aptos::move_tool::IncludedArtifactsArgs;
-use anyhow::Result;
 use aptos_api_types::MoveModule;
 use aptos_framework::BuiltPackage;
 use aptos_move_graphql_schema::{
-    build_sdl, BuilderOptions, SchemaBuilderLocal, SchemaBuilderTrait,
+    BuilderOptions, SchemaBuilderLocal, SchemaBuilderTrait, build_sdl,
 };
 use clap::Subcommand;
 
@@ -40,7 +40,7 @@ pub fn build_schema_str(
     let mut build_options = included_artifacts_args
         .included_artifacts
         .build_options(move_options)
-        .map_err(|e| CliError::UnexpectedError(format!("{:#}", e)))?;
+        .map_err(|e| CliError::UnexpectedError(format!("{e:#}")))?;
 
     build_options.install_dir = move_options.output_dir.clone();
     build_options.with_abis = true;
@@ -49,7 +49,7 @@ pub fn build_schema_str(
 
     // Build the package.
     let package = BuiltPackage::build(package_dir.clone(), build_options)
-        .map_err(|e| CliError::MoveCompilationError(format!("{:#}", e)))?;
+        .map_err(|e| CliError::MoveCompilationError(format!("{e:#}")))?;
 
     // Convert the modules into MoveModule.
     let modules = package
@@ -62,7 +62,7 @@ pub fn build_schema_str(
     let schema = SchemaBuilderLocal::new(builder_options)
         .add_modules(modules)
         .build()
-        .map_err(|e| CliError::UnexpectedError(format!("Failed to build schema: {:#}", e)))?;
+        .map_err(|e| CliError::UnexpectedError(format!("Failed to build schema: {e:#}")))?;
 
     Ok(build_sdl(&schema))
 }

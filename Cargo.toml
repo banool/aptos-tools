@@ -40,15 +40,15 @@ serde_json = { version = "1.0.81", features = [
 tokio = { version = "1.35.1", features = ["full"] }
 
 # aptos dependencies
-aptos = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
-aptos-api-types = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
-aptos-framework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
-aptos-types = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
+aptos = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "83755c454d95df6e125900cb34662f364ce2cc95" }
+aptos-api-types = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "83755c454d95df6e125900cb34662f364ce2cc95" }
+aptos-framework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "83755c454d95df6e125900cb34662f364ce2cc95" }
+aptos-types = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "83755c454d95df6e125900cb34662f364ce2cc95" }
 async-graphql-reverse = { git = "https://github.com/tacogips/async-graphql-reverse.git", rev = "2e5e7758051f7ba57da3940e5bc75a4e80badf4c" }
-move-binary-format = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
-move-core-types = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
-move-package = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
-move-resource-viewer = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "867b621fb95f577508ef7cd2794942d54e969225" }
+move-binary-format = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "83755c454d95df6e125900cb34662f364ce2cc95" }
+move-core-types = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "83755c454d95df6e125900cb34662f364ce2cc95" }
+move-package = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "83755c454d95df6e125900cb34662f364ce2cc95" }
+move-resource-viewer = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "83755c454d95df6e125900cb34662f364ce2cc95" }
 
 [patch.crates-io]
 merlin = { git = "https://github.com/aptos-labs/merlin" }

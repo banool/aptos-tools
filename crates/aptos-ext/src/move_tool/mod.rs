@@ -4,4 +4,4 @@
 pub mod generate;
 
 // Re-export what we need from the aptos crate.
-pub use aptos::move_tool::{register_package_hooks, IncludedArtifactsArgs};
+pub use aptos::move_tool::{IncludedArtifactsArgs, register_package_hooks};

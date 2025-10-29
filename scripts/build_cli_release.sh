@@ -16,13 +16,21 @@
 
 set -e
 
-NAME='aptos-cli'
-CRATE_NAME='aptos'
+NAME='aptos-ext'
+CRATE_NAME='aptos-ext'
 CARGO_PATH="crates/$CRATE_NAME/Cargo.toml"
 PLATFORM_NAME="$1"
 EXPECTED_VERSION="$2"
 SKIP_CHECKS="$3"
 COMPATIBILITY_MODE="$4"
+PROFILE="cli"
+PROFILE_FLAG=""
+if [[ "$PROFILE" == "debug" ]]; then
+  OUT_DIR="target/debug"
+else
+  PROFILE_FLAG="--profile $PROFILE"
+  OUT_DIR="target/$PROFILE"
+fi
 
 # Grab system information
 ARCH=$(uname -m)
@@ -43,8 +51,8 @@ if [[ "$SKIP_CHECKS" != "true" ]]; then
   fi
 
   # Check that the release doesn't already exist
-  if curl -s --stderr /dev/null --output /dev/null --head -f "https://github.com/aptos-labs/aptos-core/releases/download/aptos-cli-v$EXPECTED_VERSION/aptos-cli-$EXPECTED_VERSION-Ubuntu-22.04-x86_64.zip"; then
-    echo "$EXPECTED_VERSION already released"
+  if curl -s --stderr /dev/null --output /dev/null --head -f "https://github.com/banool/aptos-tools/releases/download/$CRATE_NAME-v$EXPECTED_VERSION/$CRATE_NAME-$EXPECTED_VERSION-$PLATFORM_NAME-$ARCH.zip"; then
+    echo "$CRATE_NAME-$EXPECTED_VERSION already released"
     exit 3
   fi
 else
@@ -53,11 +61,11 @@ fi
 
 echo "Building release $VERSION of $NAME for $OS-$PLATFORM_NAME on $ARCH"
 if [[ "$COMPATIBILITY_MODE" == "true" ]]; then
-  RUSTFLAGS="-C target-cpu=generic --cfg tokio_unstable -C target-feature=-sse4.2,-avx" cargo build -p "$CRATE_NAME" --profile cli
+  RUSTFLAGS="-C target-cpu=generic --cfg tokio_unstable -C target-feature=-sse4.2,-avx" cargo build -p "$CRATE_NAME" $PROFILE_FLAG
 else
-  cargo build -p "$CRATE_NAME" --profile cli
+  cargo build -p "$CRATE_NAME" $PROFILE_FLAG
 fi
-cd target/cli/
+cd $OUT_DIR
 
 # Compress the CLI
 ZIP_NAME="$NAME-$VERSION-$PLATFORM_NAME-$ARCH.zip"
