@@ -1,0 +1,277 @@
+#!/bin/sh
+# This script installs the aptos-ext CLI.
+# It will perform the following steps:
+# - Determine what platform (OS + arch) the script is being invoked from
+# - Download the CLI
+# - Put it in an appropriate location
+
+# ANSI color codes
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+BOLD='\033[1m'
+NC='\033[0m' # No Color
+
+# Default values
+TOOL="aptos-ext"
+BINARY_NAME="aptos-ext"
+TEST_COMMAND="$BINARY_NAME info"
+BIN_DIR="$HOME/.local/bin"
+FORCE=false
+ACCEPT_ALL=false
+VERSION=""
+GENERIC_LINUX=false
+UNIVERSAL_INSTALLER_URL="https://raw.githubusercontent.com/gregnazario/universal-installer/main/scripts/install_pkg.sh"
+REPO="banool/aptos-tools"
+
+# Print colored message
+print_message() {
+    color=$1
+    shift
+    printf "%b%s%b\n" "$color" "$*" "$NC"
+}
+
+# Print error and exit
+die() {
+    print_message "$RED" "Error: $1"
+    exit 1
+}
+
+# Check if a command exists
+command_exists() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+# Retry function for network operations
+retry_command() {
+    local max_retries=4
+    local attempt=1
+    local exit_code=0
+    
+    while [ $attempt -le $max_retries ]; do
+        "$@"
+        exit_code=$?
+        
+        if [ $exit_code -eq 0 ]; then
+            if [ $attempt -gt 1 ]; then
+                print_message "$GREEN" "✓ $command_description succeeded on attempt $attempt"
+            fi
+            return 0
+        fi
+        
+        if [ $attempt -lt $max_retries ]; then
+            wait_time=$((2 ** (attempt - 1)))  # Exponential backoff: 1s, 2s, 4s
+            print_message "$YELLOW" "Network operation failed on attempt $attempt, retrying in ${wait_time}s..."
+            sleep $wait_time
+        else
+            print_message "$RED" "Network operation failed after $max_retries attempts"
+        fi
+        
+        attempt=$((attempt + 1))
+    done
+    
+    return $exit_code
+}
+
+# Install required packages using universal installer
+install_required_packages() {
+    # Download universal installer if not present
+    print_message "$YELLOW" "Downloading universal installer..."
+    if command_exists curl; then
+        retry_command curl -s "$UNIVERSAL_INSTALLER_URL" -o /tmp/install_pkg.sh || die "Failed to download universal installer"
+    elif command_exists wget; then
+        retry_command wget -q "$UNIVERSAL_INSTALLER_URL" -O /tmp/install_pkg.sh || die "Failed to download universal installer"
+    else
+        die "Neither curl nor wget is installed. Please install one of them manually."
+    fi
+    chmod +x /tmp/install_pkg.sh
+
+    # Install unzip if not present
+    if ! command_exists unzip; then
+        print_message "$YELLOW" "Installing unzip..."
+        /tmp/install_pkg.sh unzip || die "Failed to install unzip"
+        rm /tmp/install_pkg.sh
+    fi
+}
+
+# Get the latest version from GitHub API
+get_latest_version() {
+    local tmp_file="/tmp/releases.json"
+    
+    if command_exists curl; then
+        retry_command curl -s "https://api.github.com/repos/$REPO/releases?per_page=100" -o "$tmp_file" || die "Failed to get latest version"
+    elif command_exists wget; then
+        retry_command wget -qO "$tmp_file" "https://api.github.com/repos/$REPO/releases?per_page=100" || die "Failed to get latest version"
+    else
+        die "Neither curl nor wget is installed. Please install one of them."
+    fi
+    
+    grep -m 1 '"tag_name": "'$TOOL'-v' "$tmp_file" | \
+    cut -d'"' -f4 | \
+    sed 's/'$TOOL'-v//'
+    
+    rm -f "$tmp_file"
+}
+
+# Determine the target platform
+get_target() {
+    case "$(uname -s)" in
+        Linux*)
+            # Check for musl libc
+            if ldd --version 2>&1 | grep -q musl; then
+                die "MUSL libc is not supported. Please install from source."
+            fi
+
+            case "$(uname -m)" in
+                x86_64|amd64)
+                    echo "Linux-x86_64"
+                    ;;
+                aarch64|arm64)
+                    die "ARM Linux is not supported. Please install from source."
+                    ;;
+                *)
+                    die "Unsupported architecture: $(uname -m)"
+                    ;;
+            esac
+            ;;
+        Darwin*)
+            case "$(uname -m)" in
+                x86_64|amd64)
+                    die "Intel Mac is not supported. Please install from source."
+                    ;;
+                arm64|aarch64)
+                    echo "macos-arm64"
+                    ;;
+                *)
+                    die "Unsupported architecture: $(uname -m)"
+                    ;;
+            esac
+            ;;
+        *)
+            die "Unsupported operating system: $(uname -s)"
+            ;;
+    esac
+}
+
+# Download and install the CLI
+install_cli() {
+    version=$1
+    target=$2
+    
+    print_message "$CYAN" "Downloading $TOOL version $version for $target..."
+    
+    # Create bin directory if it doesn't exist
+    mkdir -p "$BIN_DIR"
+    
+    # Download URL
+    url="https://github.com/$REPO/releases/download/$TOOL-v$version/$TOOL-$version-$target.zip"
+    
+    # Create temporary directory
+    tmp_dir=$(mktemp -d)
+    trap 'rm -rf "$tmp_dir"' EXIT
+    
+    # Download and extract
+    if command_exists curl; then
+        retry_command curl -L "$url" -o "$tmp_dir/$TOOL.zip" || die "Failed to download CLI binary"
+    elif command_exists wget; then
+        retry_command wget "$url" -O "$tmp_dir/$TOOL.zip" || die "Failed to download CLI binary"
+    else
+        die "Neither curl nor wget is installed. Please install one of them."
+    fi
+    
+    # Extract the zip file
+    if command_exists unzip; then
+        unzip -q "$tmp_dir/$TOOL.zip" -d "$tmp_dir"
+    else
+        die "unzip is not installed. Please install it."
+    fi
+    
+    # Move the binary to the bin directory
+    mv "$tmp_dir/$BINARY_NAME" "$BIN_DIR/"
+    chmod +x "$BIN_DIR/$BINARY_NAME"
+    
+    print_message "$GREEN" "$TOOL installed successfully!"
+}
+
+# Main installation process
+main() {
+    # Install required packages first
+    install_required_packages
+
+    # Parse command line arguments
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            -f|--force)
+                FORCE=true
+                shift
+                ;;
+            -y|--yes)
+                ACCEPT_ALL=true
+                shift
+                ;;
+            --bin-dir)
+                BIN_DIR="$2"
+                shift 2
+                ;;
+            --cli-version)
+                VERSION="$2"
+                shift 2
+                ;;
+            --generic-linux)
+                GENERIC_LINUX=true
+                shift
+                ;;
+            *)
+                die "Unknown option: $1"
+                ;;
+        esac
+    done
+    
+    # Get version if not specified
+    if [ -z "$VERSION" ]; then
+        VERSION=$(get_latest_version)
+    fi
+    
+    # Get target platform
+    target=$(get_target)
+    
+    # Check if CLI is already installed
+    if [ -x "$BIN_DIR/$BINARY_NAME" ] && [ "$FORCE" = false ]; then
+        current_version=$("$BIN_DIR/$BINARY_NAME" --version | awk '{print $NF}')
+        if [ "$current_version" = "$VERSION" ]; then
+            print_message "$YELLOW" "$TOOL version $VERSION is already installed."
+            exit 0
+        fi
+    fi
+    
+    # Install the CLI
+    install_cli "$VERSION" "$target"
+    
+    # Add to PATH if not already there
+    if ! echo "$PATH" | grep -q "$BIN_DIR"; then
+        print_message "$YELLOW" "Adding $BIN_DIR to PATH..."
+        case "$SHELL" in
+            */fish)
+                echo "set -U fish_user_paths $BIN_DIR \$fish_user_paths" >> "$HOME/.config/fish/config.fish"
+                ;;
+            *)
+                echo "export PATH=\"$BIN_DIR:\$PATH\"" >> "$HOME/.profile"
+                ;;
+        esac
+        print_message "$GREEN" "Please restart your terminal or run 'source ~/.profile' to update your PATH."
+    fi
+    
+    # Test the installation
+    print_message "$CYAN" "Testing the installation..."
+    if "$BIN_DIR/$BINARY_NAME" --version >/dev/null 2>&1; then
+        print_message "$GREEN" "$TOOL is working correctly!"
+    else
+        print_message "$RED" "There was a problem with the installation."
+        exit 1
+    fi
+}
+
+# Run the main function
+main "$@"
