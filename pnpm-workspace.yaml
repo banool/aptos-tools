@@ -3,14 +3,14 @@ packages:
   - 'packages/*'
 
 catalog:
-  '@aptos-labs/ts-sdk': ^5.1.1
-  '@tanstack/react-router': ^1.98.0
-  '@tanstack/router-plugin': ^1.98.0
-  '@types/react': ^18.3.18
-  '@types/react-dom': ^18.3.5
-  '@vitejs/plugin-react': ^4.3.4
+  '@aptos-labs/ts-sdk': ^6.0.0
+  '@tanstack/react-router': ^1.163.2
+  '@tanstack/router-plugin': ^1.163.2
+  '@types/react': ^19.2.14
+  '@types/react-dom': ^19.2.3
+  '@vitejs/plugin-react': ^5.1.4
   gh-pages: ^6.2.0
-  react: ^18.3.1
-  react-dom: ^18.3.1
+  react: ^19.2.4
+  react-dom: ^19.2.4
   typescript: ^5.7.2
-  vite: ^6.0.7
+  vite: ^7.3.1
