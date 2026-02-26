@@ -12,7 +12,7 @@ interface SearchResult {
 }
 
 function LedgerVersionFinder() {
-  const { aptos, network } = useAptos();
+  const { aptos, explorerNetworkParam } = useAptos();
   const [targetDate, setTargetDate] = useState('');
   const [targetTime, setTargetTime] = useState('00:00:00');
   const [isSearching, setIsSearching] = useState(false);
@@ -228,7 +228,7 @@ function LedgerVersionFinder() {
             </div>
           </div>
           <a
-            href={`https://explorer.aptoslabs.com/txn/${result.ledgerVersion}?network=${network.toLowerCase()}`}
+            href={`https://explorer.aptoslabs.com/txn/${result.ledgerVersion}${explorerNetworkParam ? `?network=${explorerNetworkParam}` : ''}`}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.explorerLink}

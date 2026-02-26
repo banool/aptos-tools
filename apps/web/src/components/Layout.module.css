@@ -61,10 +61,10 @@
   background: var(--bg-input);
   border: 1px solid var(--border);
   color: var(--text-secondary);
-  padding: 0.3rem 0.5rem;
+  padding: 0.375rem 0.625rem;
   border-radius: var(--radius);
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   transition: border-color 0.15s;
 }
 

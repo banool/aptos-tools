@@ -1,29 +1,39 @@
 import { Link, useRouterState } from '@tanstack/react-router';
 import { useAptos } from '../contexts/AptosContext';
-import { Network } from '@aptos-labs/ts-sdk';
+import NetworkModal from './NetworkModal';
 import styles from './Layout.module.css';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
+
+const MANAGE_NETWORKS_VALUE = '__manage__';
 
 function Layout({ children }: { children: ReactNode }) {
   const router = useRouterState();
-  const { network, setNetwork } = useAptos();
+  const { networkId, setNetworkId, customNetworks } = useAptos();
+  const [modalOpen, setModalOpen] = useState(false);
 
   const tools = [
     { path: '/ledger-version-finder', name: 'Ledger Version Finder', icon: '🔍' },
     { path: '/address-formatter', name: 'Address Formatter', icon: '📋' },
     { path: '/clock-comparison', name: 'Clock Comparison', icon: '🕐' },
     { path: '/transaction-finder', name: 'Transaction Finder', icon: '🔎' },
-    { path: '/feature-flags', name: 'Feature Flags', icon: '🚩' },
+    { path: '/feature-flags', name: 'Feature Flags', icon: '⛳️' },
   ];
 
   const currentPath = router.location.pathname;
+
+  const handleNetworkChange = (value: string) => {
+    if (value === MANAGE_NETWORKS_VALUE) {
+      setModalOpen(true);
+      return;
+    }
+    setNetworkId(value);
+  };
 
   return (
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.headerContent}>
           <Link to="/" className={styles.logo}>
-            <span className={styles.logoIcon}>⬢</span>
             <span className={styles.logoText}>Aptos Tools</span>
           </Link>
 
@@ -31,13 +41,21 @@ function Layout({ children }: { children: ReactNode }) {
             <label htmlFor="network">Network:</label>
             <select
               id="network"
-              value={network}
-              onChange={(e) => setNetwork(e.target.value as Network)}
+              value={networkId}
+              onChange={(e) => handleNetworkChange(e.target.value)}
               className={styles.select}
             >
-              <option value={Network.MAINNET}>Mainnet</option>
-              <option value={Network.TESTNET}>Testnet</option>
-              <option value={Network.DEVNET}>Devnet</option>
+              <option value="mainnet">Mainnet</option>
+              <option value="testnet">Testnet</option>
+              <option value="devnet">Devnet</option>
+              <option value="shelbynet">Shelbynet</option>
+              {customNetworks.map((n) => (
+                <option key={n.id} value={n.id}>
+                  {n.name}
+                </option>
+              ))}
+              <option disabled>──────────</option>
+              <option value={MANAGE_NETWORKS_VALUE}>Manage networks...</option>
             </select>
           </div>
         </div>
@@ -78,6 +96,8 @@ function Layout({ children }: { children: ReactNode }) {
           </a>
         </p>
       </footer>
+
+      <NetworkModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </div>
   );
 }

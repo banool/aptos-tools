@@ -1,14 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useAptos } from '../contexts/AptosContext';
 import styles from './FeatureFlags.module.css';
-
-type NetworkOption = 'mainnet' | 'testnet' | 'devnet' | 'shelbynet' | 'custom';
-
-const NETWORK_URLS: Record<Exclude<NetworkOption, 'custom'>, string> = {
-  mainnet: 'https://api.mainnet.aptoslabs.com/v1',
-  testnet: 'https://api.testnet.aptoslabs.com/v1',
-  devnet: 'https://api.devnet.aptoslabs.com/v1',
-  shelbynet: 'https://api.shelbynet.aptoslabs.com/v1',
-};
 
 interface FeatureInfo {
   name: string;
@@ -243,8 +235,7 @@ function buildFeatureRows(enabledFeatures: Set<number>): FeatureRow[] {
 }
 
 function FeatureFlags() {
-  const [network, setNetwork] = useState<NetworkOption>('mainnet');
-  const [customUrl, setCustomUrl] = useState('');
+  const { nodeUrl, networkId } = useAptos();
   const [enabledFeatures, setEnabledFeatures] = useState<Set<number> | null>(null);
   const [rawHex, setRawHex] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -252,20 +243,7 @@ function FeatureFlags() {
   const [filter, setFilter] = useState('');
   const [showOnly, setShowOnly] = useState<'all' | 'enabled' | 'disabled'>('all');
 
-  const getBaseUrl = useCallback(() => {
-    if (network === 'custom') {
-      return customUrl.replace(/\/+$/, '');
-    }
-    return NETWORK_URLS[network];
-  }, [network, customUrl]);
-
   const fetchFeatures = useCallback(async () => {
-    const baseUrl = getBaseUrl();
-    if (!baseUrl) {
-      setError('Please enter a node URL');
-      return;
-    }
-
     setLoading(true);
     setError(null);
     setEnabledFeatures(null);
@@ -273,7 +251,7 @@ function FeatureFlags() {
 
     try {
       const response = await fetch(
-        `${baseUrl}/accounts/0x1/resource/0x1::features::Features`,
+        `${nodeUrl}/accounts/0x1/resource/0x1::features::Features`,
       );
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -287,13 +265,11 @@ function FeatureFlags() {
     } finally {
       setLoading(false);
     }
-  }, [getBaseUrl]);
+  }, [nodeUrl]);
 
   useEffect(() => {
-    if (network !== 'custom') {
-      fetchFeatures();
-    }
-  }, [network]); // eslint-disable-line react-hooks/exhaustive-deps
+    fetchFeatures();
+  }, [fetchFeatures]);
 
   const rows = enabledFeatures ? buildFeatureRows(enabledFeatures) : [];
 
@@ -314,21 +290,19 @@ function FeatureFlags() {
   const enabledCount = rows.filter((r) => r.enabled).length;
   const disabledCount = rows.filter((r) => !r.enabled).length;
 
-  const handleCustomSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    fetchFeatures();
-  };
+  // Key on networkId to avoid showing stale results while loading.
+  const hasResults = enabledFeatures && !loading;
 
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.title}>
-          <span className={styles.icon}>🚩</span>
+          <span className={styles.icon}>⛳️</span>
           Feature Flags
         </h1>
         <p className={styles.description}>
-          View which on-chain feature flags are enabled for a given network. Feature definitions are
-          sourced from{' '}
+          View which on-chain feature flags are enabled for the selected network. Feature
+          definitions are sourced from{' '}
           <a
             href="https://github.com/aptos-labs/aptos-core/blob/main/aptos-move/framework/move-stdlib/sources/configs/features.move"
             target="_blank"
@@ -339,42 +313,6 @@ function FeatureFlags() {
           </a>
           .
         </p>
-      </div>
-
-      <div className={styles.controls}>
-        <div className={styles.networkRow}>
-          <label htmlFor="ff-network" className={styles.label}>
-            Network
-          </label>
-          <select
-            id="ff-network"
-            value={network}
-            onChange={(e) => setNetwork(e.target.value as NetworkOption)}
-            className={styles.select}
-          >
-            <option value="mainnet">Mainnet</option>
-            <option value="testnet">Testnet</option>
-            <option value="devnet">Devnet</option>
-            <option value="shelbynet">Shelbynet</option>
-            <option value="custom">Custom URL</option>
-          </select>
-        </div>
-
-        {network === 'custom' && (
-          <form onSubmit={handleCustomSubmit} className={styles.customUrlRow}>
-            <input
-              type="url"
-              value={customUrl}
-              onChange={(e) => setCustomUrl(e.target.value)}
-              className={styles.input}
-              placeholder="https://fullnode.mainnet.aptoslabs.com/v1"
-              required
-            />
-            <button type="submit" className={styles.fetchButton} disabled={loading}>
-              {loading ? 'Fetching...' : 'Fetch'}
-            </button>
-          </form>
-        )}
       </div>
 
       {error && (
@@ -390,7 +328,7 @@ function FeatureFlags() {
         </div>
       )}
 
-      {enabledFeatures && (
+      {hasResults && (
         <>
           <div className={styles.summary}>
             <div className={styles.statCard}>
@@ -446,7 +384,7 @@ function FeatureFlags() {
             </div>
           </div>
 
-          <div className={styles.featureList}>
+          <div className={styles.featureList} key={networkId}>
             {filteredRows.length === 0 && (
               <div className={styles.emptyState}>No features match your filter.</div>
             )}

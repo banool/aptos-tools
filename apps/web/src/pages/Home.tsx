@@ -38,7 +38,7 @@ function Home() {
     {
       path: '/feature-flags',
       name: 'Feature Flags',
-      icon: '🚩',
+      icon: '⛳️',
       description:
         'View which on-chain feature flags are enabled for a given network. Supports mainnet, testnet, devnet, shelbynet, and custom node URLs.',
       features: ['All networks + custom URL', 'Live on-chain data', 'Search & filter'],

@@ -16,7 +16,7 @@ interface TransactionResult {
 }
 
 function TransactionFinder() {
-  const { aptos, network } = useAptos();
+  const { aptos, explorerNetworkParam } = useAptos();
   const [senderAddress, setSenderAddress] = useState('');
   const [sequenceNumber, setSequenceNumber] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -352,7 +352,7 @@ function TransactionFinder() {
             </div>
           </div>
           <a
-            href={`https://explorer.aptoslabs.com/txn/${result.version}?network=${network.toLowerCase()}`}
+            href={`https://explorer.aptoslabs.com/txn/${result.version}${explorerNetworkParam ? `?network=${explorerNetworkParam}` : ''}`}
             target="_blank"
             rel="noopener noreferrer"
             className={styles.explorerLink}
