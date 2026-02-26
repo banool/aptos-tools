@@ -528,7 +528,7 @@ function ClockComparison() {
   // Get color based on time difference
   const getDriftColor = (diffMs: number): string => {
     const absDiff = Math.abs(diffMs);
-    if (absDiff < 1000) return '#4fc3a0'; // Green: < 1s
+    if (absDiff < 1000) return '#22c55e'; // Green: < 1s
     if (absDiff < 5000) return '#f59e0b'; // Yellow: 1-5s
     return '#ef4444'; // Red: > 5s
   };
@@ -597,7 +597,7 @@ function ClockComparison() {
               y={y}
               textAnchor="middle"
               dominantBaseline="central"
-              fill="#4fc3a0"
+              fill="#3b82f6"
               fontSize="18"
               fontWeight="600"
             >
@@ -612,7 +612,7 @@ function ClockComparison() {
           y1="100"
           x2={100 + Math.cos((hourAngle * Math.PI) / 180) * 50}
           y2={100 + Math.sin((hourAngle * Math.PI) / 180) * 50}
-          stroke="#4fc3a0"
+          stroke="#3b82f6"
           strokeWidth="6"
           strokeLinecap="round"
         />
@@ -623,7 +623,7 @@ function ClockComparison() {
           y1="100"
           x2={100 + Math.cos((minuteAngle * Math.PI) / 180) * 70}
           y2={100 + Math.sin((minuteAngle * Math.PI) / 180) * 70}
-          stroke="#4fc3a0"
+          stroke="#3b82f6"
           strokeWidth="4"
           strokeLinecap="round"
         />
@@ -640,7 +640,7 @@ function ClockComparison() {
         />
 
         {/* Center dot */}
-        <circle cx="100" cy="100" r="5" fill="#4fc3a0" />
+        <circle cx="100" cy="100" r="5" fill="#3b82f6" />
       </svg>
     );
   };
