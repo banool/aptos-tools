@@ -13,6 +13,7 @@ function Layout({ children }: { children: ReactNode }) {
     { path: '/address-formatter', name: 'Address Formatter', icon: '📋' },
     { path: '/clock-comparison', name: 'Clock Comparison', icon: '🕐' },
     { path: '/transaction-finder', name: 'Transaction Finder', icon: '🔎' },
+    { path: '/feature-flags', name: 'Feature Flags', icon: '🚩' },
   ];
 
   const currentPath = router.location.pathname;

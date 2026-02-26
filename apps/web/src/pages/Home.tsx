@@ -35,6 +35,14 @@ function Home() {
         'Find the transaction hash and ledger version for a transaction by sender address and sequence number using binary search.',
       features: ['Binary search algorithm', 'O(log n) complexity', 'Full transaction details'],
     },
+    {
+      path: '/feature-flags',
+      name: 'Feature Flags',
+      icon: '🚩',
+      description:
+        'View which on-chain feature flags are enabled for a given network. Supports mainnet, testnet, devnet, shelbynet, and custom node URLs.',
+      features: ['All networks + custom URL', 'Live on-chain data', 'Search & filter'],
+    },
   ];
 
   return (
