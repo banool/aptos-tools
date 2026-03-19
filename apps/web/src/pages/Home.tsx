@@ -43,6 +43,14 @@ function Home() {
         'View which on-chain feature flags are enabled for a given network. Supports mainnet, testnet, devnet, shelbynet, and custom node URLs.',
       features: ['All networks + custom URL', 'Live on-chain data', 'Search & filter'],
     },
+    {
+      path: '/tps-tracker',
+      name: 'TPS Tracker',
+      icon: '📈',
+      description:
+        'Monitor real-time transactions per second on the Aptos blockchain. Polls the node API every second to track throughput with a live graph.',
+      features: ['Live TPS graph', 'Average & peak TPS', 'Start/stop/reset controls'],
+    },
   ];
 
   return (

@@ -17,6 +17,7 @@ function Layout({ children }: { children: ReactNode }) {
     { path: '/clock-comparison', name: 'Clock Comparison', icon: '🕐' },
     { path: '/transaction-finder', name: 'Transaction Finder', icon: '🔎' },
     { path: '/feature-flags', name: 'Feature Flags', icon: '⛳️' },
+    { path: '/tps-tracker', name: 'TPS Tracker', icon: '📈' },
   ];
 
   const currentPath = router.location.pathname;
